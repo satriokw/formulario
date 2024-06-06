@@ -1,7 +1,8 @@
 import { useState } from "react";
-import Form from "@rjsf/core";
-import { RJSFSchema } from "@rjsf/utils";
+import Form from "@rjsf/antd";
 import validator from "@rjsf/validator-ajv8";
+
+import { convertJsonSchema, convertUiSchema } from "./adaptor";
 
 import data from "./data.json";
 import modelForm from "./data-form-model.json";
@@ -10,21 +11,21 @@ function App() {
   const [allFormData, setAllFormData] = useState(null);
   const [selectedForm, setSelectedForm] = useState({ name: null, id: null });
   const [isGetFormDataClicked, setIsGetFormDataClicked] = useState(false);
+  const [isConvertForm, setIsConvertForm] = useState(false);
+  const [schema, setSchema] = useState({});
+  const [uiSchema, setUiSchema] = useState({});
   function getData() {
     setAllFormData(data);
   }
   function selectForm(value) {
     setSelectedForm(value);
   }
-  const schema = {
-    title: "Todo",
-    type: "object",
-    required: ["title"],
-    properties: {
-      title: { type: "string", title: "Title", default: "A new task" },
-      done: { type: "boolean", title: "Done?", default: false },
-    },
-  };
+
+  function convertDataSchema() {
+    setIsConvertForm(!isConvertForm);
+    setSchema(convertJsonSchema(modelForm));
+    setUiSchema(convertUiSchema(modelForm));
+  }
 
   const log = (type) => console.log.bind(console, type);
 
@@ -87,12 +88,22 @@ function App() {
         Convert form model into RJSF{" "}
         <button
           className="ml-4 p-2 border border-black bg-slate-300"
-          onClick={() => {}}
+          onClick={() => convertDataSchema()}
         >
           Klik Here
         </button>
       </p>
       <p className="mb-4">RJSF FORMS</p>
+      {isConvertForm ? (
+        <Form
+          schema={schema}
+          validator={validator}
+          uiSchema={uiSchema}
+          onChange={log("changed")}
+          onSubmit={log("submitted")}
+          onError={log("errors")}
+        />
+      ) : null}
     </div>
   );
 }
