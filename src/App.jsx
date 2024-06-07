@@ -5,7 +5,7 @@ import validator from "@rjsf/validator-ajv8";
 import { convertJsonSchema, convertUiSchema } from "./adaptor";
 
 import data from "./data.json";
-import modelForm from "./data-form-model.json";
+import modelForm from "./data-oss-2.json";
 
 function App() {
   const [allFormData, setAllFormData] = useState(null);
