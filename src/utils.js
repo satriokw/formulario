@@ -3,10 +3,10 @@ import FORM_2 from "./data/2-biz-form-input-data.json";
 import FORM_3 from "./data/3-saved-rejected-data.json";
 import FORM_4 from "./data/4-register-data.json";
 import FORM_5 from "./data/5-new-assessment-data.json";
-import FORM_6 from "./data/1-new-assessment-data.json";
-import FORM_7 from "./data/1-new-assessment-data.json";
-import FORM_8 from "./data/1-new-assessment-data.json";
-import FORM_9 from "./data/1-new-assessment-data.json";
+import FORM_6 from "./data/6-http-santo-data.json";
+import FORM_7 from "./data/7-subtask-santo-data.json";
+import FORM_8 from "./data/8-test-1-data.json";
+import FORM_9 from "./data/9-register-data.json";
 import FORM_10 from "./data/10-input-data.json";
 
 export const dataMap = {

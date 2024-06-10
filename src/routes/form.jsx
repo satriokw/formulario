@@ -5,7 +5,6 @@ import validator from "@rjsf/validator-ajv8";
 import { convertJsonSchema, convertUiSchema } from "../adaptor";
 
 import taskDatas from "../data/tasks.json";
-import modelForm from "../data/data-oss-2.json";
 import { createFileRoute } from "@tanstack/react-router";
 import { Button, Select } from "@mantine/core";
 import { useMemo } from "react";
@@ -22,10 +21,12 @@ function FormPage() {
   }
 
   function convertDataSchema() {
-    setIsConvertForm(!isConvertForm);
-    console.log(dataMap[selectedTask.value]);
-    setSchema(convertJsonSchema(dataMap[selectedTask.value]));
-    setUiSchema(convertUiSchema(dataMap[selectedTask.value]));
+    // setIsConvertForm(!isConvertForm);
+    // console.log(dataMap[selectedTask.value]);
+    if (!dataMap[selectedTask.value].hasOwnProperty("error")) {
+      setSchema(convertJsonSchema(dataMap[selectedTask.value]));
+      setUiSchema(convertUiSchema(dataMap[selectedTask.value]));
+    }
   }
 
   const log = (type) => console.log.bind(console, type);
@@ -71,7 +72,12 @@ function FormPage() {
       </p>
       <p className="mb-4">RJSF FORMS</p>
       <div className="border border-slate-500 p-4">
-        {isConvertForm ? (
+        {selectedTask && dataMap[selectedTask.value].hasOwnProperty("error") ? (
+          <>
+            <p>{dataMap[selectedTask.value].error.message}</p>
+            <p>{dataMap[selectedTask.value].error.exception}</p>
+          </>
+        ) : (
           <Form
             schema={schema}
             validator={validator}
@@ -80,7 +86,7 @@ function FormPage() {
             onSubmit={log("submitted")}
             onError={log("errors")}
           />
-        ) : null}
+        )}
       </div>
     </div>
   );
