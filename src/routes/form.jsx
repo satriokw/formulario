@@ -4,55 +4,63 @@ import validator from "@rjsf/validator-ajv8";
 
 import { convertJsonSchema, convertUiSchema } from "../adaptor";
 
-import data from "../data.json";
-import modelForm from "../data-oss-2.json";
+import taskDatas from "../data/tasks.json";
+import modelForm from "../data/data-oss-2.json";
 import { createFileRoute } from "@tanstack/react-router";
 import { Button, Select } from "@mantine/core";
 import { useMemo } from "react";
+import { dataMap } from "../utils";
 
 function FormPage() {
-  const [allFormData, setAllFormData] = useState(null);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [allFormData, setAllFormData] = useState(false);
   const [isConvertForm, setIsConvertForm] = useState(false);
   const [schema, setSchema] = useState({});
   const [uiSchema, setUiSchema] = useState({});
   function getData() {
-    setAllFormData(data);
+    setAllFormData(!allFormData);
   }
 
   function convertDataSchema() {
     setIsConvertForm(!isConvertForm);
-    setSchema(convertJsonSchema(modelForm));
-    setUiSchema(convertUiSchema(modelForm));
+    console.log(dataMap[selectedTask.value]);
+    setSchema(convertJsonSchema(dataMap[selectedTask.value]));
+    setUiSchema(convertUiSchema(dataMap[selectedTask.value]));
   }
 
   const log = (type) => console.log.bind(console, type);
 
   // console.log(allFormData);
 
-  const formDatas = useMemo(
+  const datas = useMemo(
     () =>
-      data.data.map((item) => ({
+      taskDatas.data.map((item) => ({
         value: item.id,
-        label: item.name,
+        label: `${item.name} -- ${item.id}`,
         key: item.id,
       })),
-    [data]
+    [taskDatas]
   );
 
   return (
     <div className="p-8">
       <div className="mb-8">
-        <span>Get All Forms</span>
+        <span>Get All Tasks</span>
         <Button className="ml-4" onClick={() => getData()}>
           Click here
         </Button>
       </div>
       <div className="mb-8 border border-black p-4">
-        <p className="mb-4 text-2xl">List all forms</p>
-        {allFormData === null ? (
+        {!allFormData ? (
           <span>no Data...</span>
         ) : (
-          <Select data={formDatas} />
+          <>
+            <p className="mb-4 text-2xl">Select form by task-id</p>
+            <Select
+              data={datas}
+              onChange={(_value, option) => setSelectedTask(option)}
+            />
+          </>
         )}
       </div>
       <p className="mb-4">
