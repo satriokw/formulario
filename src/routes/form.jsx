@@ -21,12 +21,17 @@ function FormPage() {
   }
 
   function convertDataSchema() {
-    // setIsConvertForm(!isConvertForm);
+    setIsConvertForm(true);
     // console.log(dataMap[selectedTask.value]);
     if (!dataMap[selectedTask.value].hasOwnProperty("error")) {
       setSchema(convertJsonSchema(dataMap[selectedTask.value]));
       setUiSchema(convertUiSchema(dataMap[selectedTask.value]));
     }
+  }
+
+  function changeTask(option) {
+    setIsConvertForm(false);
+    setSelectedTask(option);
   }
 
   const log = (type) => console.log.bind(console, type);
@@ -44,48 +49,55 @@ function FormPage() {
   );
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <span>Get All Tasks</span>
-        <Button className="ml-4" onClick={() => getData()}>
-          Click here
-        </Button>
+    <div className="p-8 grid grid-cols-2 gap-8">
+      <div>
+        <div className="mb-8">
+          <span>Get All Tasks</span>
+          <Button className="ml-4" onClick={() => getData()}>
+            Click here
+          </Button>
+        </div>
+        <div className="mb-8 border border-black p-4">
+          {!allFormData ? (
+            <span>no Data...</span>
+          ) : (
+            <>
+              <p className="mb-4 text-2xl">Select form by task-id</p>
+              <Select
+                data={datas}
+                onChange={(_value, option) => changeTask(option)}
+              />
+            </>
+          )}
+        </div>
+        <p className="mb-4">
+          Get selected form model and Convert Form{" "}
+          <Button className="ml-4" onClick={() => convertDataSchema()}>
+            Click here
+          </Button>
+        </p>
       </div>
-      <div className="mb-8 border border-black p-4">
-        {!allFormData ? (
-          <span>no Data...</span>
-        ) : (
-          <>
-            <p className="mb-4 text-2xl">Select form by task-id</p>
-            <Select
-              data={datas}
-              onChange={(_value, option) => setSelectedTask(option)}
-            />
-          </>
-        )}
-      </div>
-      <p className="mb-4">
-        Get selected form model and Convert Form{" "}
-        <Button className="ml-4" onClick={() => convertDataSchema()}>
-          Click here
-        </Button>
-      </p>
-      <p className="mb-4">RJSF FORMS</p>
-      <div className="border border-slate-500 p-4">
-        {selectedTask && dataMap[selectedTask.value].hasOwnProperty("error") ? (
-          <>
-            <p>{dataMap[selectedTask.value].error.message}</p>
-            <p>{dataMap[selectedTask.value].error.exception}</p>
-          </>
-        ) : (
-          <Form
-            schema={schema}
-            validator={validator}
-            uiSchema={uiSchema}
-            onChange={log("changed")}
-            onSubmit={log("submitted")}
-            onError={log("errors")}
-          />
+      <div>
+        <p className="mb-4">RJSF FORMS</p>
+        {isConvertForm && (
+          <div className="border border-slate-500 p-4">
+            {selectedTask &&
+            dataMap[selectedTask.value].hasOwnProperty("error") ? (
+              <>
+                <p>{dataMap[selectedTask.value].error.message}</p>
+                <p>{dataMap[selectedTask.value].error.exception}</p>
+              </>
+            ) : (
+              <Form
+                schema={schema}
+                validator={validator}
+                uiSchema={uiSchema}
+                onChange={log("changed")}
+                onSubmit={log("submitted")}
+                onError={log("errors")}
+              />
+            )}
+          </div>
         )}
       </div>
     </div>
