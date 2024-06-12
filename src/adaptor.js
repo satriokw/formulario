@@ -94,36 +94,38 @@ export function convertJsonSchema(data) {
 
 // function UISchema convert
 export function convertUiSchema(data) {
-  const { id } = field;
+  const uiSchema = {};
+  data.fields.forEach((field) => {
+    const { id } = field;
 
-  // if the type is not on the typeMap, it will skip it.
-  if (type in typeMap) {
-    const uiProperty = {}
+    // if the type is not on the typeMap, it will skip it.
+    if (field.type in typeMap) {
+      const uiProperty = {};
 
-    // placeholder
-    if (field.placeholder) {
-      uiProperty["ui:placeholder"] = field.placeholder
-    }
-    // readonly
-    if (field.readOnly) {
-      uiProperty["ui:readonly"] = field.readOnly
-    }
-    // password
-    if (field.type === 'password') {
-      uiProperty["ui:widget"] = 'password'
-    }
-
-    // radio-buttons
-    if (field.type === 'radio-buttons'
-    ) {
-      uiProperty["ui:widget"] = "radio",
-      uiProperty["ui:options"] = {
-        "inilne": true
+      // placeholder
+      if (field.placeholder) {
+        uiProperty["ui:placeholder"] = field.placeholder;
       }
-    }
+      // readonly
+      if (field.readOnly) {
+        uiProperty["ui:readonly"] = field.readOnly;
+      }
+      // password
+      if (field.type === "password") {
+        uiProperty["ui:widget"] = "password";
+      }
 
-    uiSchema[id] = uiProperty
-  }
+      // radio-buttons
+      if (field.type === "radio-buttons") {
+        (uiProperty["ui:widget"] = "radio"),
+          (uiProperty["ui:options"] = {
+            inilne: true,
+          });
+      }
+
+      uiSchema[id] = uiProperty;
+    }
+  });
 
   return uiSchema;
 }

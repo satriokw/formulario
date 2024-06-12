@@ -24,6 +24,9 @@ function Index() {
   return (
     <div className="mt-12 p-2">
       <Container>
+        <p className="mb-8 text-2xl font-bold">
+          Login
+        </p>
         <form onSubmit={form.onSubmit(login)}>
           <TextInput
             withAsterisk

@@ -36,8 +36,6 @@ function FormPage() {
 
   const log = (type) => console.log.bind(console, type);
 
-  // console.log(allFormData);
-
   const datas = useMemo(
     () =>
       taskDatas.data.map((item) => ({
@@ -47,6 +45,33 @@ function FormPage() {
       })),
     [taskDatas]
   );
+
+  function downloadData() {
+    const json = JSON.stringify(schema);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'json_schema.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    downloadUiSchema()
+  };
+
+  function downloadUiSchema() {
+    const json = JSON.stringify(uiSchema);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'ui_shcema.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
 
   return (
     <div className="p-8 grid grid-cols-2 gap-8">
@@ -76,6 +101,13 @@ function FormPage() {
             Click here
           </Button>
         </p>
+        {isConvertForm && (
+          <p className="mb-4">
+            <Button className="ml-4" onClick={downloadData}>
+              Download RJSF Form format file
+            </Button>
+          </p>
+        )}
       </div>
       <div>
         <p className="mb-4">RJSF FORMS</p>
