@@ -9,6 +9,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Button, Select } from "@mantine/core";
 import { useMemo } from "react";
 import { dataMap } from "../utils";
+import  axios, { HttpStatusCode }  from "axios";
 
 function FormPage() {
   const [selectedTask, setSelectedTask] = useState(null);
@@ -16,7 +17,26 @@ function FormPage() {
   const [isConvertForm, setIsConvertForm] = useState(false);
   const [schema, setSchema] = useState({});
   const [uiSchema, setUiSchema] = useState({});
+
+  /**
+   * fetch data from flowable task by users
+   */
   function getData() {
+    const username = 'santo'
+    const url = '/api' + 'flowable-rest/service/runtime/tasks?assignee=' + username;
+
+    axios.get(url, {
+      auth: {
+        username: import.meta.env.VITE_FLOWABLE_API_USERNAME,
+        password: import.meta.env.VITE_FLOWABLE_API_PASSWORD
+      }
+    }).then(res=>{
+      console.log(res);  
+      if(res.status == HttpStatusCode.Ok) {
+        console.log('ok')
+      }
+
+    })
     setAllFormData(!allFormData);
   }
 

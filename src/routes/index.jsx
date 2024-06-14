@@ -2,6 +2,7 @@ import { Container, PasswordInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Button, Group, TextInput } from "@mantine/core";
+import  axios, { HttpStatusCode }  from "axios";
 
 function Index() {
   const navigate = useNavigate();
@@ -12,14 +13,30 @@ function Index() {
       password: "",
     },
 
-    validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-    },
+    // validate: {
+    //   email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+    // },
   });
 
   function login(values) {
+    const url = '/api' + import.meta.env.VITE_FLOWABLE_API_CONTEXT_PATH + '/idm-api/users/' + values.email
+    console.log(url)
     console.log(values);
-    navigate({ to: "/form" });
+
+    axios.get(url, {
+      auth: {
+        username: import.meta.env.VITE_FLOWABLE_API_USERNAME,
+        password: import.meta.env.VITE_FLOWABLE_API_PASSWORD
+      }
+    }).then(res=>{
+      console.log(res);
+      if(res.status == HttpStatusCode.Ok) {
+        navigate({ to: "/form" });
+        
+      }
+
+    })
+    // navigate({ to: "/form" });
   }
   return (
     <div className="mt-12 p-2">
