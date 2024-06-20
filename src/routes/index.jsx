@@ -1,7 +1,9 @@
-import { Button, TextInput, Center, Grid, PasswordInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import axios, { HttpStatusCode } from "axios";
+
+import { useForm } from "@mantine/form";
+import { PasswordInput, Grid, Button, Center, TextInput } from "@mantine/core";
+import kwLogo from "../assets/img/logo-kw.png";
 
 function Index() {
   const navigate = useNavigate();
@@ -69,7 +71,8 @@ function Index() {
           </form>
         </Grid.Col>
         <Grid.Col span={6} p="lg">
-          <img src={kwLogo.src} />
+          heheheh
+          <img src={kwLogo} />
         </Grid.Col>
       </Grid>
     </Center>
