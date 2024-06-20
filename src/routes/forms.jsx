@@ -9,7 +9,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Button, Select } from "@mantine/core";
 import { useMemo } from "react";
 import { dataMap } from "../utils";
-import  axios, { HttpStatusCode }  from "axios";
+import axios, { HttpStatusCode } from "axios";
 
 function FormPage() {
   const [selectedTask, setSelectedTask] = useState(null);
@@ -22,21 +22,23 @@ function FormPage() {
    * fetch data from flowable task by users
    */
   function getData() {
-    const username = 'santo'
-    const url = '/api' + 'flowable-rest/service/runtime/tasks?assignee=' + username;
+    const username = "santo";
+    const url =
+      "/api" + "flowable-rest/service/runtime/tasks?assignee=" + username;
 
-    axios.get(url, {
-      auth: {
-        username: import.meta.env.VITE_FLOWABLE_API_USERNAME,
-        password: import.meta.env.VITE_FLOWABLE_API_PASSWORD
-      }
-    }).then(res=>{
-      console.log(res);  
-      if(res.status == HttpStatusCode.Ok) {
-        console.log('ok')
-      }
-
-    })
+    axios
+      .get(url, {
+        auth: {
+          username: import.meta.env.VITE_FLOWABLE_API_USERNAME,
+          password: import.meta.env.VITE_FLOWABLE_API_PASSWORD,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.status == HttpStatusCode.Ok) {
+          console.log("ok");
+        }
+      });
     setAllFormData(!allFormData);
   }
 
@@ -68,25 +70,25 @@ function FormPage() {
 
   function downloadData() {
     const json = JSON.stringify(schema);
-    const blob = new Blob([json], { type: 'application/json' });
+    const blob = new Blob([json], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'json_schema.json';
+    a.download = "json_schema.json";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    downloadUiSchema()
-  };
+    downloadUiSchema();
+  }
 
   function downloadUiSchema() {
     const json = JSON.stringify(uiSchema);
-    const blob = new Blob([json], { type: 'application/json' });
+    const blob = new Blob([json], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'ui_shcema.json';
+    a.download = "ui_shcema.json";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -156,6 +158,6 @@ function FormPage() {
   );
 }
 
-export const Route = createFileRoute("/form")({
+export const Route = createFileRoute("/forms")({
   component: FormPage,
 });

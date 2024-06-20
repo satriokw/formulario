@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import {
   AppShell,
   Button,
@@ -104,7 +104,14 @@ function TaskPage() {
                   <Table.Td>{item.priority}</Table.Td>
                   <Table.Td>{item.dueDate ?? "-"}</Table.Td>
                   <Table.Td>
-                    <Button onClick={() => {}}>View Task</Button>
+                    <Link
+                      to="/form/$taskId"
+                      params={{
+                        taskId: item.id,
+                      }}
+                    >
+                      <Button>View Task</Button>
+                    </Link>
                   </Table.Td>
                 </Table.Tr>
               ))

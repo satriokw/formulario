@@ -12,8 +12,9 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as TasksImport } from './routes/tasks'
-import { Route as FormImport } from './routes/form'
+import { Route as FormsImport } from './routes/forms'
 import { Route as IndexImport } from './routes/index'
+import { Route as FormTaskIdImport } from './routes/form/$taskId'
 
 // Create/Update Routes
 
@@ -22,13 +23,18 @@ const TasksRoute = TasksImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const FormRoute = FormImport.update({
-  path: '/form',
+const FormsRoute = FormsImport.update({
+  path: '/forms',
   getParentRoute: () => rootRoute,
 } as any)
 
 const IndexRoute = IndexImport.update({
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const FormTaskIdRoute = FormTaskIdImport.update({
+  path: '/form/$taskId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -43,11 +49,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/form': {
-      id: '/form'
-      path: '/form'
-      fullPath: '/form'
-      preLoaderRoute: typeof FormImport
+    '/forms': {
+      id: '/forms'
+      path: '/forms'
+      fullPath: '/forms'
+      preLoaderRoute: typeof FormsImport
       parentRoute: typeof rootRoute
     }
     '/tasks': {
@@ -57,6 +63,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TasksImport
       parentRoute: typeof rootRoute
     }
+    '/form/$taskId': {
+      id: '/form/$taskId'
+      path: '/form/$taskId'
+      fullPath: '/form/$taskId'
+      preLoaderRoute: typeof FormTaskIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -64,8 +77,9 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
-  FormRoute,
+  FormsRoute,
   TasksRoute,
+  FormTaskIdRoute,
 })
 
 /* prettier-ignore-end */
@@ -77,18 +91,22 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.jsx",
       "children": [
         "/",
-        "/form",
-        "/tasks"
+        "/forms",
+        "/tasks",
+        "/form/$taskId"
       ]
     },
     "/": {
       "filePath": "index.jsx"
     },
-    "/form": {
-      "filePath": "form.jsx"
+    "/forms": {
+      "filePath": "forms.jsx"
     },
     "/tasks": {
       "filePath": "tasks.jsx"
+    },
+    "/form/$taskId": {
+      "filePath": "form/$taskId.jsx"
     }
   }
 }
