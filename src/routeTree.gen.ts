@@ -11,10 +11,16 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as TasksImport } from './routes/tasks'
 import { Route as FormImport } from './routes/form'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const TasksRoute = TasksImport.update({
+  path: '/tasks',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const FormRoute = FormImport.update({
   path: '/form',
@@ -44,12 +50,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FormImport
       parentRoute: typeof rootRoute
     }
+    '/tasks': {
+      id: '/tasks'
+      path: '/tasks'
+      fullPath: '/tasks'
+      preLoaderRoute: typeof TasksImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({ IndexRoute, FormRoute })
+export const routeTree = rootRoute.addChildren({
+  IndexRoute,
+  FormRoute,
+  TasksRoute,
+})
 
 /* prettier-ignore-end */
 
@@ -60,7 +77,8 @@ export const routeTree = rootRoute.addChildren({ IndexRoute, FormRoute })
       "filePath": "__root.jsx",
       "children": [
         "/",
-        "/form"
+        "/form",
+        "/tasks"
       ]
     },
     "/": {
@@ -68,6 +86,9 @@ export const routeTree = rootRoute.addChildren({ IndexRoute, FormRoute })
     },
     "/form": {
       "filePath": "form.jsx"
+    },
+    "/tasks": {
+      "filePath": "tasks.jsx"
     }
   }
 }
