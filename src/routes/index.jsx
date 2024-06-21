@@ -38,7 +38,7 @@ function Index() {
       .then((res) => {
         console.log(res);
         if (res.status == HttpStatusCode.Ok) {
-          navigate({ to: "/form" });
+          navigate({ to: "/tasks" });
         }
       });
     // navigate({ to: "/form" });
